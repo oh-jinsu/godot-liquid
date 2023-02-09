@@ -1,0 +1,26 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "shader_type spatial;
+
+render_mode cull_disabled, shadows_disabled;
+
+uniform float fill;
+
+uniform float thickness;
+
+varying lowp vec3 pos;
+
+void vertex() {
+	VERTEX -= thickness * NORMAL;
+	
+	pos = mat3(WORLD_MATRIX) * VERTEX;
+}
+
+void fragment() {
+	if (pos.y > fill) discard;
+
+	ALBEDO = FRONT_FACING ? vec3(0, 0.7, 0.9) : vec3(1, 1, 1);
+	
+	NORMAL = FRONT_FACING ? NORMAL : vec3(1, 1, 1);
+}"
